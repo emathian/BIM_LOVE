@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Annalyse_modèle1</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Annalyse_modèle1</h1>
+</div>
+<h2 id="analyse-du-modèle-1">Analyse du modèle 1</h2>
+<p>Le premmier modèle permet de modéliser l'évolution de l'amour au cours du temps en fonction du temps de travail. L'hypothèse mathématique étant relativement simple plus le temps de travail (<span class="math inline">\(Tw\)</span>) est important, plus les résultats (<span class="math inline">\(R\)</span>) croient mais moins les partenaires ont du temps à partager. Face à ce constat nous modélisons l'évolution des sentiments de chacun des partenaires nommés ici 1 et 2. ### Équation et paramètre</p>
+<p>L'équation de l'amour de 1-&gt;2 et de 2-&gt;1 est de même forme générale. Nous proposons ici un modèle sans intéraction, autrement dit l'amour 1 pour 2 ne modifie pas l'amour de 2 pour 1 et réciproquement. En effet nous nous intéressons ici à l'effet des résultats, dépendant eux même du travail, sur les sentiments partagés par les partenaires. Le modèle est régit par l'équation suivante : <!-- Il faut  faire un modèle avec intéraction !!! --></p>
+<center>
+<p><span class="math display">\[ 
+ x_{1}\prime = x_1 (x-m_1)(1-x_1) - \epsilon\\
+\]</span></p>
+<span class="math display">\[
+ x_{2}\prime = x_2 (x-m_2)(1-x_2) -\epsilon
+\]</span>
+</center>
+<p><span class="math inline">\(x_1\prime\)</span> et respectivement <span class="math inline">\(x_2\prime\)</span> représente l'amour de 1-2 et l'amour de 2-&gt;1, au cours du temps. L'intervalle de temps sur lequel est calculé les solutions est définit par l'utilisateur, l'unité de temps est la semaine. L'amour est compris inférieur 1 (<span class="math inline">\(x(t)&lt;1\)</span>), la passion amoureuse est atteinte lorsque <span class="math inline">\(x_i =1\)</span>, l'ignorance équivaut à (<span class="math inline">\(x_i =0\)</span>) et la haine à (<span class="math inline">\(x_i&lt;0\)</span>). Les conditions initiales soit l'amour à <span class="math inline">\(t=0\)</span> est choisit par l'utilisateur.</p>
+<p>Les paramètre de cet EDO sont m1 et m2, qui équivalent à (<span class="math inline">\(1-\frac{ Tw_i}{Tmax}\)</span>), où <span class="math inline">\(Tw_i\)</span> est le temps de travail du partenaire<span class="math inline">\(_i\)</span> à l'instant <span class="math inline">\(t=0\)</span>. <span class="math inline">\(Tmax\)</span> est une estimation du temps de travail maximal pouvant être réalisé en une semaine, ici &quot;arbitrairement&quot; fixé à <span class="math inline">\(Tmax=35 h\)</span>. Ainsi définit <span class="math inline">\(m_i\in[0,1]\)</span>.</p>
+<p>Le modèle proposé ci-dessus est stochastique, en effet on fait ici l'hypothèse que les relations amoureuses sont perturbées par des disputes. L'utilisateur choisit ainsi la fréquence de disputes (<em>Nombre de dispute par mois</em>). À partir de cette fréquence l'algorithme génére un échantillon alétoire tiré dans une lois binomiale, de taille équivalent au nombre de pas de temps. Pour chaque occurence de 1 une dispute est modélisée, lors d'une dispute <span class="math inline">\(\epsilon \neq 0\)</span>. L'ampleur de la dispute est quant à elle générée par tirage dans une loi normale centre d'écart type <span class="math inline">\(0.1\)</span>. On obtient finalement :</p>
+<center>
+<span class="math display">\[ 
+\begin{array}{l}
+Dispute \sim B ( n , p) \quad \text{ou  n= Nombre de pas de temps et p = frequece de disputes }\\
+\end{array}
+\]</span>
+</center>
+<center>
+<span class="math display">\[
+\begin{aligned}
+\text{Si Dispute = 0} \epsilon = 0 \\
+\text{Sinon } \epsilon \sim N (0,0.1)
+\end{aligned}
+\]</span>
+</center>
+<h3 id="équilibre">Équilibre</h3>
+<center>
+<span class="math display">\[X_i ^\prime = X_i (X_i - m_i) (1-X_i)\]</span>
+</center>
+est une EDO de la forme <span class="math inline">\(X_i^\prime = f_m(X_i)\)</span> où <span class="math inline">\(f_m(X_i)= X_i (X_i - m_i) (1-X_i)\)</span>. Donc <span class="math inline">\(f_m(X)\in \mathcal{C} ^\infty (\mathbb{R})\)</span> donc en particulier à <span class="math inline">\(\mathcal{C}^1\)</span>, ainsi le théorème de Cauchy Lipschitz local peut être appliqué. Les équilibres notés <span class="math inline">\(X_i^*\)</span> sont de la forme:
+<center>
+<span class="math display">\[
+f_m(X_i^*) =0
+\]</span>
+</center>
+<h5 id="cas-n1"><strong>Cas n°1</strong> :</h5>
+<p>Si <span class="math inline">\(m_i = 0\)</span> , il y a deux équilibres <span class="math inline">\(X_0^* =0\)</span> et <span class="math inline">\(X_1^*=1\)</span>. Alors <span class="math inline">\(f_m(X)=(X)(X-1)\)</span></p>
+<p><img src="IMG1.png" /><img src="/Users/mathian/Desktop/INSA_L3_S2/BIM_SHINY/IMG2/IMG2/IMG2.001.png" /></p>
+<p>Dans ce cas si les résultats sont optimaux, c'est à dire : <span class="math display">\[
+m=0 \Rightarrow 1-R= 0 \Rightarrow R= \frac{T_{max}}{T_{max}}
+\]</span> Les sentiments tendent vers la passion étant donné que <span class="math inline">\(X^*=0\)</span> est un équilibre instable.</p>
+<h5 id="cas-n2"><strong>Cas n°2</strong> :</h5>
+<p>Si <span class="math inline">\(m\in[0,1]\)</span>, on a trois équilibre <span class="math inline">\(X^*=0\)</span> ,<span class="math inline">\(X^*=1\)</span> et <span class="math inline">\(X^*=m\)</span>. Alors <span class="math inline">\(f_m\)</span> est égale à <span class="math inline">\(f_m (X)= -X^3 +X^2(1-m)-Xm\)</span>.</p>
+<p><img src="/Users/mathian/Desktop/INSA_L3_S2/BIM_SHINY/IMG3.png" /> <img src="/Users/mathian/Desktop/INSA_L3_S2/BIM_SHINY/IMG2/IM3/IM3.001.png" /> <br> L'isocline <span class="math inline">\(X^*=m\)</span> est instable, nous remarquons alors que plus m diminue (soit plus R augmente)ô plus le temps nécessaire pour atteindre l'isocline nulle augmente tel que :</p>
+
+<h5 id="cas-n3"><strong>Cas n°3</strong> :</h5>
+<p>Si <span class="math inline">\(m_i=1\)</span>, <span class="math inline">\(f_m(X_i)= X_i^3-X_i\)</span>. On a alors 2 équilibres <span class="math inline">\(X_0^*=0\)</span> et <span class="math inline">\(X_1^*=1\)</span></p>
+<p><img src="/Users/mathian/Desktop/INSA_L3_S2/BIM_SHINY/IM4.png" /><img src="/Users/mathian/Desktop/INSA_L3_S2/BIM_SHINY/IMG2/IM4/IM4.001.png" /> <br> Ainsi si <span class="math inline">\(m=1\)</span> alors <span class="math inline">\(1-R=0\)</span> et <span class="math inline">\(R=0\)</span>, alors on conclut que pour des résultats nuls les sentiments convergent vers l'ignorance.</p>
+<h3 id="résolution-de-léquation">Résolution de l'équation :</h3>
+<p>Ce graphique représente les solutions du modèle, soit l'amour de 1-&gt;2 au cours du temps pour des valeur de M croissante de 0 à 1 et un amour initial égal à 0.5. <br> <img src="/Users/mathian/Desktop/INSA_L3_S2/BIM_SHINY/beauty.png" />!</p>
+<p><br> Ce graphique représente la durée d'une relation soit le durée avant que les sentiment de 1-&gt;2 avoisine 0, selon la valeurs de M. On observe ainsi que le pérénnité d'un couple et négativement corrélée à M. En effet rapellons que <span class="math inline">\(M_1 = 1 - \frac{Tw}{T_{max}}\)</span>, où <span class="math inline">\(\frac{Tw}{T_{max}}\)</span> traduit dans ce modèle les résultats de 1. Ainsi plus les sont faibles plus M augmente et moins la relation est pérenen. <br> <img src="/Users/mathian/Desktop/INSA_L3_S2/BIM_SHINY/TEMPS_RELATION.png" />!</p>
+<h3 id="équation-des-résultats">Équation des résultats :</h3>
+<p>Das ce modèle nous faisons l'hypothèse idyllique que les résultats croissent au cours du temps en fonction du temps de travail selon l'équation suivante : <span class="math display">\[R_i(t)^\prime = \frac{Tw_i}{Tmax} R_i (1 - R_i) \]</span> Ainsi les résultats au temps t=0 sont défini par l'utilisateur, le temps de travail (Tw) détermine la vitesse de convergence vers les résultats optimaux (20/20).</p>
+<h3 id="résolution-de-léquation-résultats">Résolution de l'équation résultats</h3>
+<p>Soit l'équation :</p>
+<p><span class="math display">\[ R^\prime = \frac{Tw}{T_{max}}(R-R^2) \]</span> <span class="math display">\[ R^\prime - \frac{Tw}{T_{max}}(R-R^2) =0 \quad \text{(E1)}\]</span> E1 est une EDO de Bernoulli, nous divisons cette EDO par <span class="math inline">\(R^2\)</span> : <span class="math display">\[R^\prime R^{-2} - \frac{Tw}{T_{max}} R^{-1}+ \frac{Tw}{T_{max}} =0 \]</span> On pose une fonction u(t) telle que : <span class="math display">\[ u(t) = R^{-1}(t) \qquad \text{où} t\in\mathbb{R}\]</span> D'où <span class="math display">\[u(t)^\prime = -2R^{-2}R^\prime  \]</span> On a alors: <span class="math display">\[ R^{-2}R^\prime = \frac{-1}{2}u(t)^\prime \]</span> Suite à ce changement de varible l'équation E1 s'écrit comme : <span class="math display">\[\frac{-1}{2}u^ \prime - \frac{Tw}{T_{max}} u +\frac{Tw}{T_{max}} =0 \]</span> <span class="math display">\[u^ \prime +2 \frac{Tw}{T_{max}} u -2\frac{Tw}{T_{max}} =0  \quad \text{(E2)}\]</span> E2 est une EDO linéaire que l'on sait résoudre et équivaut à: <span class="math display">\[u^\prime + 2  \frac{Tw}{T_{max}} u  = 2\frac{Tw}{T_{max}}  \]</span> On multiplie chaque membre de E2 par : <span class="math display">\[ e^{\int_{0}^{t}\frac{2Tw}{T_{max}} ds}\]</span> <span class="math display">\[ e^{\frac{2Tw}{T_{max}} t}\]</span> On a alors : <span class="math display">\[(e^{\frac{2Tw}{T_{max}}t}u(t))^\prime  = e^{\frac{2Tw}{T_{max}}t}\frac{2Tw}{T_{max}} \]</span> On intègre entre t=0 et t : <span class="math display">\[e^{\frac{2Tw}{T_{max}}t}u(t) - u_0 = \int_{0}^{t} e^{\frac{2Tw}{T_{max}} s}\frac{2Tw}{T_{max}} ds  \]</span> On a donc : <span class="math display">\[u(t)=e^{\frac{-2Tw}{T_{max}}}[u_0 +\int_{0}^{t} e^{\frac{2Tw}{T_{max}} s}\frac{2Tw}{T_{max}} ds]  \]</span> <span class="math display">\[u(t)= u_0e^{\frac{-2Tw}{T_{max}}} +e^{\frac{2Tw}{T_{max}}(-1+t)} \]</span> Or comme : <span class="math display">\[u(t) =R^{-1} \]</span> On a : <span class="math display">\[R(t) =\frac{1}{u_0e^{\frac{-2Tw}{T_{max}}} +e^{\frac{2Tw}{T_{max}}(-1+t)}} \]</span></p>
+<h3 id="lamour-en-fonction-des-résultats">L'amour en fonction des résultats :</h3>
+<p>Dans ce premier modèle simpliste la modélisation de l'amour en fonction des résultats (Cf : graphique ligne 3) est une simple relation linéaire telle que l'amour de 1-&gt;2 en fonction des résultats de 1 est : <span class="math display">\[ A_{1}(t) = R_{1}(t) - R_{2}(t)-J_1\]</span> Où <span class="math inline">\(J_1\)</span> est le coefficient de jalousie de 1-&gt;2, paramètre choisi par l'utilisateur. L'amour 1-&gt;2 croit en fonction de ses résultats au cours du temps néanmoins ses sentiments sont pondérés par sa jalousie pour 2. Biensur la même relation est appliqué pour expliquer l'amour de 2-&gt;1 en fonction de la jalousie de 2 (<span class="math inline">\(J_2\)</span>).</p>
+</body>
+</html>
