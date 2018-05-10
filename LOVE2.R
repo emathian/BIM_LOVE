@@ -13,6 +13,9 @@ library(crosstalk)
 library(rmarkdown)
 library(knitLatex)
 library(knitr)
+library(rootSolve)
+library(phaseR)
+
 withMathJax()
 # equation du modèle 1 
 # Rappelons que y1 est l'amour de 1->2
@@ -55,16 +58,25 @@ XR <- function (R1 , R2 , J )
 # This model is the same as the first one but parameters of love equation has been replaced 
 #by the result of reqult equations (cf : EqR) 
 
-EqL2 <- function(t, y, p) { 
+
+
+EqL2 <- function(t, y,p) { 
   with(as.list(c(y, p)) , {
-    dy1 <- y[1]*(y[1]-y[3])*(1-y[1]) 
-    dy2 <- y[2]*(y[2]-y[4])*(1-y[2])  
-    dy3 <- pR1*y[3] * (1-(y[3]) ) 
-    dy4 <- pR2*y[4] * (1-(y[4]) ) 
-    list(c(Y1= dy1, Y2 = dy2 , Y3=dy3 , Y4=dy4))
+    dy1 <- y[1]*(y[1]-1+y[2])*(1-y[1]) 
+    dy2 <- y[2]*(y[2]-(1-y[4]))*(1-y[2])  
+    dy3 <- (y[3]*(pR1 + y[1]) )* (1-(y[3]) ) 
+    dy4 <- (y[4]*(pR2 +y[2]) )* (1-(y[4]) ) 
+    list(c(Y1= dy1, Y2 = dy2 , Y3=dy3 , Y4=dy4) )#Y2 = dy2 ,, Y4=dy4
   })
 }
-
+# MM modele pour les portraits de phase
+EqL2_stab <- function(t, y, parameters) { 
+  with(as.list(c(y, parameters)) , {
+    dy1 <- y[1]*(y[1]-1+y[2])*(1-y[1]) 
+    dy2 <- (y[2]*(parameters[1] + y[1]) )* (1-(y[2]) ) 
+    list(c(Y1= dy1,  Y2=dy2 ))
+  })
+}
 
 # Modèle avec équations différentielles pour les résultats inutile 
 #EqR <- function(t, y, parms) {
@@ -159,11 +171,21 @@ ui <- fluidPage(
                                    mainPanel(
                                      
                                      width = 10 ,
-                                     plotlyOutput("model2" ,height = "900px")
+                                     plotlyOutput("model2" ,height = "900px"),
+                                     plotOutput("portrait_phase" , height = "150px", width = "150px"),
+                                     plotOutput("portrait_phase2" , height = "150px" , width = "150px")
+                                     
                                      
                                    )
-                            )
-                          )
+                                  )
+                                 ),
+                                   
+                                   tabPanel("Annalyse",
+                                            #includeHTML("Annalyse_modele1.html")
+                                            withMathJax(includeMarkdown("Analyse_modele2.md"),
+                                                        
+                                                        tags$script(src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"))
+                                   )
                         ),
                         
              
@@ -722,6 +744,39 @@ server <- function(input , output){
     
     
   })
+  
+  output$portrait_phase <- renderPlot({
+    # Paramètre des équations de R
+    M_M22 <- reactive({(input$TW_M2/35)})
+    R_M22<- reactive({(input$R_M2/20)})
+    # Conditions initioales de l'équation des sentiments
+    L0_M22  <- c(Y1 = input$L0_M2,  Y2=R_M22() )
+    # # parms est le vecteur de paramètres passé à lsoda
+    pR1 <- M_M22()
+    
+   
+    
+    flowField(deriv = EqL2_stab , x.lim = c(0,1.3), y.lim = c(0,1),  parameters= c(pr1) , points = 13 , add = FALSE, xlab="Amour" , ylab="Résultats")
+    nullclines(deriv = EqL2_stab , x.lim = c(-1,1.5), y.lim = c(-1,1.5),  parameters= c(pr1) , points = 501 , system = "two.dim" ,  colour=c("darkblue", "aquamarine") , add=TRUE)
+    trajectory(deriv = EqL2_stab,  y0 = L0_M22, t.end = 50,   parameters=c(pr1) , add=TRUE)
+  })  
+  
+  
+  output$portrait_phase2 <- renderPlot({
+    # Paramètre des équations de R
+    SM_M22 <- reactive({(input$STW_M2/35)})
+    SR_M22<- reactive({(input$SR_M2/20)})
+    # Conditions initioales de l'équation des sentiments
+    SL0_M22  <- c(Y1 = input$SL0_M2,  Y2=SR_M22() )
+    # # parms est le vecteur de paramètres passé à lsoda
+    pR2 <- SM_M22()
+    
+    
+    
+    flowField(deriv = EqL2_stab , x.lim = c(0,1.3), y.lim = c(0,1),  parameters= c(pR2) , points = 13 , add = FALSE, xlab="Amour" , ylab="Résultats")
+    nullclines(deriv = EqL2_stab , x.lim = c(-1,1.5), y.lim = c(-1,1.5),  parameters= c(pR2) , points = 501 , system = "two.dim" ,  colour=c("darkblue", "aquamarine") , add=TRUE)
+    trajectory(deriv = EqL2_stab,  y0 = SL0_M22, t.end = 50,   parameters=c(pR2) , add=TRUE)
+  })  
   
   output$model3 <- renderPlotly({
     

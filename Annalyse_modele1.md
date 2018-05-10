@@ -5,8 +5,11 @@ output:
   pdf_document: default
 ---
 ## Analyse du modèle 1
-Le premmier modèle permet de modéliser l'évolution de l'amour au cours du temps en fonction du temps de travail. L'hypothèse mathématique étant relativement simple plus le temps de travail ($Tw$) est important, plus les résultats ($R$) croient mais moins les partenaires ont du temps à partager. Face à ce constat nous modélisons l'évolution des sentiments de chacun des partenaires nommés ici 1 et 2. 
-### Équation et paramètre 
+
+
+
+Le premmier modèle permet de modéliser l'évolution de l'amour au cours du temps en fonction du temps de travail. L'hypothèse mathématique étant relativement simple plus le temps de travail ($Tw$) est important, plus les résultats ($R$) croissent et plus les sentiments augmente. En effet nous modélisérons ici la situation où les résultats est une composante imortante de l'estime de sois et augmente la capacité à chérir son partenaire. Face à ce constat nous modélisons l'évolution des sentiments de chacun des partenaires nommés ici 1 et 2. 
+### Équation et paramètres 
 
 L'équation de l'amour de 1->2 et de 2->1 est de même forme générale. Nous proposons ici un modèle sans intéraction, autrement dit l'amour 1 pour 2 ne modifie pas l'amour de 2 pour 1 et réciproquement. En effet nous nous intéressons ici à l'effet des résultats, dépendant eux même du travail, sur les sentiments partagés par les partenaires. Le modèle est régit par l'équation suivante : 
 <!-- Il faut  faire un modèle avec intéraction !!! -->
@@ -31,7 +34,7 @@ Le modèle proposé ci-dessus est stochastique, en effet on fait ici l'hypothès
 <center>
 $$ 
 \begin{array}{l}
-Dispute \sim B ( n , p) \quad \text{ou  n= Nombre de pas de temps et p = frequece de disputes }\\
+Dispute \sim B ( n , p) \quad \text{où  n= Nombre de pas de temps et p = frequece de disputes }\\
 \end{array}
 $$
 </center>
@@ -44,7 +47,7 @@ $$
 $$
 </center>
 
-### Équilibre
+### Équilibres
 
 <center>
 $$X_i ^\prime = X_i (X_i - m_i) (1-X_i)$$
@@ -139,3 +142,6 @@ Dans ce premier modèle simpliste la modélisation de l'amour en fonction des r�
 $$ A_{1}(t) = R_{1}(t) - R_{2}(t)-J_1$$
 Où $J_1$ est le coefficient de jalousie de 1->2, paramètre choisi par l'utilisateur. L'amour 1->2 croit en fonction de ses résultats au cours du temps néanmoins ses sentiments sont pondérés par sa jalousie pour 2. 
 Biensur la même relation est appliqué pour expliquer l'amour de 2->1 en fonction de la jalousie de 2 ($J_2$).
+
+### Critique du modèle :
+Ce modèle permet de présenter l'avolution de l'amour au cours du temps en prenant comme paramètre une constante M, traduisant les résultats. Néanmoins l'EDO des résultats n'est pas lié à l'évolution des sentiment. Ce point sera modifié dans le modèle 2. De plus le modèle proposé pour l'évolution des résultats reste simpliste et donc peu réaliste. En outre si nous avons introduits un modèle expliquant l'amour en fonction des résultat de 1 et des résultats de 2, cettte équation n'est ni intégrée dans l'évolution des sentiments au cours du temps ni réaliste en raison de l'EDO des résultats.
