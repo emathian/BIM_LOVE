@@ -123,10 +123,10 @@ ui <- fluidPage(
                         ),
                     
                         tabPanel("Annalyse",
-                                 includeHTML("Annalyse_modele1.html")
-                               # withMathJax(includeMarkdown("Annalyse_modele1.md"),
+                                 #includeHTML("Annalyse_modele1.html")
+                                withMathJax(includeMarkdown("Annalyse_modele1.md"),
                                   
-                                #   tags$script(src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"))
+                                  tags$script(src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"))
                         )
              ),
        
