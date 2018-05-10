@@ -172,8 +172,8 @@ ui <- fluidPage(
                                      
                                      width = 10 ,
                                      plotlyOutput("model2" ,height = "900px"),
-                                     plotOutput("portrait_phase" , height = "150px", width = "150px"),
-                                     plotOutput("portrait_phase2" , height = "150px" , width = "150px")
+                                     plotOutput("portrait_phase" , height = "350px", width = "350px"),
+                                     plotOutput("portrait_phase2" , height = "350px" , width = "350px")
                                      
                                      
                                    )
